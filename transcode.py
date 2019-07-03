@@ -75,6 +75,10 @@ def locate(root, match_function, ignore_dotfiles=True):
     Yields all filenames within the root directory for which match_function returns True.
     '''
     for path, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d not in ['@eaDir']]
+        '''
+        Ignore Synology index folder
+        '''
         for filename in (os.path.abspath(os.path.join(path, filename)) for filename in files if match_function(filename)):
             if ignore_dotfiles and os.path.basename(filename).startswith('.'):
                 pass
